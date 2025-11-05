@@ -2,8 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 import uuid
-
-
+    
+    
 class Category(models.Model):
     """Product Category Model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -33,8 +33,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
-
+    
+    
 class Product(models.Model):
     """
     Product Model - Matches eci_products.csv structure
@@ -142,97 +142,38 @@ class Product(models.Model):
         help_text="Model/part number"
     )
 
-    # Physical attributes
-    weight = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text="Weight in kg"
-    )
-    dimensions = models.JSONField(
-        null=True,
-        blank=True,
-        default=dict,
-        help_text="Dimensions: {length, width, height} in cm"
-    )
-
     # Inventory management
     stock_quantity = models.IntegerField(
         default=0,
         validators=[MinValueValidator(0)],
         help_text="Current stock quantity"
     )
-    low_stock_threshold = models.IntegerField(
-        default=10,
-        validators=[MinValueValidator(0)],
-        help_text="Alert threshold for low stock"
-    )
 
-    # Media and assets
-    image_url = models.URLField(
-        max_length=500,
-        blank=True,
-        null=True,
-        help_text="Primary product image URL"
-    )
-    images = models.JSONField(
-        default=list,
-        blank=True,
-        null=True,
-        help_text="Array of additional image URLs"
-    )
-
-    # Metadata and tags
-    tags = models.JSONField(
-        default=list,
-        blank=True,
-        null=True,
-        help_text="Product tags for categorization and search"
-    )
     attributes = models.JSONField(
         default=dict,
         blank=True,
         null=True,
         help_text="Custom product attributes (color, size, specifications)"
     )
-
-    # SEO fields
-    meta_title = models.CharField(
-        max_length=200,
-        blank=True,
-        null=True,
-        help_text="SEO meta title"
-    )
-    meta_description = models.TextField(
-        blank=True,
-        null=True,
-        help_text="SEO meta description"
-    )
-    meta_keywords = models.TextField(
-        blank=True,
-        null=True,
-        help_text="SEO keywords"
-    )
-
-    # Product flags
-    is_featured = models.BooleanField(
-        default=False,
-        db_index=True,
-        help_text="Featured product (shown prominently)"
-    )
-    is_available = models.BooleanField(
-        default=True,
-        help_text="Product availability status"
-    )
-    is_bestseller = models.BooleanField(
-        default=False,
-        help_text="Bestseller flag"
-    )
-    is_new = models.BooleanField(
-        default=False,
-        help_text="New arrival flag"
-    )
+    #
+    # # Product flags
+    # is_featured = models.BooleanField(
+    #     default=False,
+    #     db_index=True,
+    #     help_text="Featured product (shown prominently)"
+    # )
+    # is_available = models.BooleanField(
+    #     default=True,
+    #     help_text="Product availability status"
+    # )
+    # is_bestseller = models.BooleanField(
+    #     default=False,
+    #     help_text="Bestseller flag"
+    # )
+    # is_new = models.BooleanField(
+    #     default=False,
+    #     help_text="New arrival flag"
+    # )
 
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
@@ -246,7 +187,7 @@ class Product(models.Model):
         indexes = [
             models.Index(fields=['sku'], name='idx_product_sku'),
             models.Index(fields=['category', 'is_active'], name='idx_category_active'),
-            models.Index(fields=['is_active', 'is_featured'], name='idx_active_featured'),
+            # models.Index(fields=['is_active', 'is_featured'], name='idx_active_featured'),
             models.Index(fields=['price'], name='idx_product_price'),
             models.Index(fields=['-created_at'], name='idx_created_at'),
             models.Index(fields=['brand'], name='idx_product_brand'),
@@ -296,8 +237,8 @@ class Product(models.Model):
             discount = ((self.compare_at_price - self.price) / self.compare_at_price) * 100
             return round(discount, 2)
         return None
-
-
+    
+    
 class ProductReview(models.Model):
     """Product Review and Rating Model"""
 
@@ -363,8 +304,8 @@ class ProductReview(models.Model):
 
     def __str__(self):
         return f"Review by {self.customer_name} for {self.product.name} ({self.rating}★)"
-
-
+    
+    
 class ProductImage(models.Model):
     """Additional Product Images Model"""
 
