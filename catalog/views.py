@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from django.db.models import Q, Avg, Count
 from django.shortcuts import get_object_or_404
 from .models import Category, Product, ProductReview
-from .serializers import (
+from .serializer import (
     CategorySerializer,
     ProductListSerializer,
     ProductDetailSerializer,
