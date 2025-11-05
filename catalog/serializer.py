@@ -46,7 +46,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'product_id', 'sku', 'name', 'slug', 'category',
-            'price', 'is_active', 'is_featured', 'brand',
+            'price', 'is_active', 'brand',
             'stock_quantity', 'is_in_stock', 'is_low_stock',
             'short_description', 'created_at'
         ]
@@ -56,7 +56,6 @@ class ProductListSerializer(serializers.ModelSerializer):
 class ProductDetailSerializer(serializers.ModelSerializer):
     """Product Detail Serializer (full details)"""
     is_in_stock = serializers.ReadOnlyField()
-    is_low_stock = serializers.ReadOnlyField()
     average_rating = serializers.SerializerMethodField()
     review_count = serializers.SerializerMethodField()
 
@@ -64,13 +63,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'product_id', 'sku', 'name', 'slug', 'category',
-            'price', 'cost_price', 'is_active', 'is_featured',
+            'price', 'cost_price', 'is_active',
             'description', 'short_description', 'brand',
-            'weight', 'images', 'tags', 'attributes',
-            'meta_title', 'meta_description',
-            'stock_quantity', 'low_stock_threshold',
-            'is_in_stock', 'is_low_stock', 'is_available',
-            'average_rating', 'review_count',
+            'attributes',
+            'stock_quantity',
+            'is_in_stock', 'average_rating', 'review_count',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['product_id', 'created_at', 'updated_at']
@@ -94,13 +91,10 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             'product_id', 'sku', 'name', 'slug', 'category',
-            'price', 'cost_price', 'is_active', 'is_featured',
+            'price', 'cost_price', 'is_active',
             'description', 'short_description', 'brand',
-            'weight', 'images', 'tags', 'attributes',
-            'meta_title', 'meta_description',
-            'stock_quantity', 'low_stock_threshold', 'is_available'
+            'attributes', 'stock_quantity'
         ]
-        read_only_fields = ['product_id']
 
     def validate_price(self, value):
         if value <= 0:

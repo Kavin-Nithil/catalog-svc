@@ -218,11 +218,6 @@ class Product(models.Model):
         return self.stock_quantity > 0
 
     @property
-    def is_low_stock(self):
-        """Check if product stock is below threshold"""
-        return 0 < self.stock_quantity <= self.low_stock_threshold
-
-    @property
     def profit_margin(self):
         """Calculate profit margin if cost_price is set"""
         if self.cost_price and self.cost_price > 0:

@@ -25,7 +25,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = []
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -67,7 +67,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     ViewSet for Product CRUD operations
     """
     queryset = Product.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = []
     lookup_field = 'product_id'
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['price', 'name', 'created_at', 'stock_quantity']
@@ -178,10 +178,6 @@ class ProductViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(price__gte=params['min_price'])
         if 'max_price' in params:
             queryset = queryset.filter(price__lte=params['max_price'])
-
-        # Featured filter
-        if 'is_featured' in params:
-            queryset = queryset.filter(is_featured=params['is_featured'])
 
         # In stock filter
         if 'in_stock' in params and params['in_stock']:
@@ -335,7 +331,6 @@ class ProductViewSet(viewsets.ModelViewSet):
             'sku': product.sku,
             'stock_quantity': product.stock_quantity,
             'is_in_stock': product.is_in_stock,
-            'is_low_stock': product.is_low_stock
         })
 
     @action(detail=True, methods=['get'])
