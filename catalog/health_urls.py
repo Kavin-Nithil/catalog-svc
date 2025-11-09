@@ -10,7 +10,7 @@ def health_check(request):
     """Basic health check"""
     return JsonResponse({
         'status': 'healthy',
-        'service': 'shipping-service',
+        'service': 'catalog-service',
         'version': '1.0.0'
     })
 
@@ -42,7 +42,7 @@ def health_live(request):
     """Liveness check - simple alive check"""
     return JsonResponse({
         'status': 'alive',
-        'service': 'shipping-service'
+        'service': 'catalog-service'
     })
 
 
